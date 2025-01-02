@@ -1,0 +1,16 @@
+---
+- name: Setup Master
+  hosts: k3s-master
+  become: true
+  remote_user: ubuntu
+  roles:
+    - master
+
+- name: Setup Worker
+  hosts:
+    - k3s-worker1
+    - k3s-worker2
+  become: true
+  remote_user: ubuntu
+  roles:
+    - worker

@@ -1,0 +1,34 @@
+---
+- name: Run update
+  ansible.builtin.apt:
+    name: aptitude
+    state: latest
+    update_cache: true
+
+- name: Install kubectl
+  ansible.builtin.shell: |
+    curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+    chmod +x kubectl
+    sudo mv kubectl /usr/local/bin
+
+- name: Install k3s
+  ansible.builtin.shell: |
+    curl -sfL https://get.k3s.io | INSTALL_K3S_EXEC="--flannel-backend=none --disable-network-policy --cluster-cidr=192.168.0.0/16" sh -
+
+- name: Confgiure kubeconfig
+  ansible.builtin.shell: |
+    mkdir -p /home/ubuntu/.kube
+    cp /etc/rancher/k3s/k3s.yaml /home/ubuntu/.kube/config
+    chown -R ubuntu:ubuntu /home/ubuntu/.kube/config
+
+- name: Fetch k3s token
+  ansible.builtin.fetch:
+    src: /var/lib/rancher/k3s/server/node-token
+    dest: ./token
+    flat: yes
+
+- name: Fetch kubeconfig
+  ansible.builtin.fetch:
+    src: /home/ubuntu/.kube/config
+    dest: ./kubeconfig
+    flat: yes
