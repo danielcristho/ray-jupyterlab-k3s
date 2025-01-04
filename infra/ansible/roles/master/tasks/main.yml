@@ -13,13 +13,21 @@
 
 - name: Install k3s
   ansible.builtin.shell: |
-    curl -sfL https://get.k3s.io | INSTALL_K3S_EXEC="--flannel-backend=none --disable-network-policy --cluster-cidr=192.168.0.0/16" sh -
+    curl -sfL https://get.k3s.io | INSTALL_K3S_EXEC="--tls-san 192.168.122.10" sh -
 
-- name: Confgiure kubeconfig
+- name: Configure kubeconfig
   ansible.builtin.shell: |
     mkdir -p /home/ubuntu/.kube
     cp /etc/rancher/k3s/k3s.yaml /home/ubuntu/.kube/config
     chown -R ubuntu:ubuntu /home/ubuntu/.kube/config
+
+- name: Replace 127.0.0.1 with 192.168.122.10 in kubeconfig
+  ansible.builtin.replace:
+    path: /home/ubuntu/.kube/config
+    regexp: 'https://127\.0\.0\.1:6443'
+    replace: "https://192.168.122.10:6443"
+  # become: true
+  # become_user: ubuntu
 
 - name: Fetch k3s token
   ansible.builtin.fetch:
