@@ -28,12 +28,12 @@
   ansible.builtin.copy:
     src: ./kubeconfig
     dest: /home/ubuntu/.kube/config
-    mode: "0644"
+    mode: "0600"
     owner: ubuntu
     group: ubuntu
 
 - name: Install k3s agent on worker
   ansible.builtin.shell: |
     TOKEN=$(cat /tmp/token)
-    curl -sfL https://get.k3s.io | K3S_URL=https://{{ MASTER_IP }}:6443 K3S_TOKEN=$TOKEN sh -
+    curl -sfL https://get.k3s.io | K3S_TOKEN=$TOKEN sh -s - agent --server https://{{ MASTER_IP }}:6443
     export KUBECONFIG=/home/ubuntu/.kube.config
