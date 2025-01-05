@@ -16,3 +16,5 @@ sudo mv kubectl /usr/local/bin
 # curl -fsSL https://get.docker.com -o install-docker.sh
 # sudo sh install-docker.sh
 # sudo usermod -aG docker "$USER"
+
+curl -sfL https://get.k3s.io | INSTALL_K3S_EXEC="--write-kubeconfig-mode=644 --disable traefik" K3S_TOKEN=k3stoken sh -s - server --server https://192.168.122.10:6443

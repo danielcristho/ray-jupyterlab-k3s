@@ -21,7 +21,7 @@ variable "master_ips" {
 
 variable "master_memory" {
   type    = string
-  default = "4096"
+  default = "3072"
 }
 
 variable "master_vcpu" {
@@ -47,7 +47,7 @@ variable "app_ips" {
 
 variable "app_memory" {
   type    = string
-  default = "1024"
+  default = "2048"
 }
 
 variable "app_vcpu" {
