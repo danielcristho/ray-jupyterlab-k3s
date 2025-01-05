@@ -1,0 +1,10 @@
+---
+- name: Clone ray project
+  changed_when: false
+  ansible.builtin.git:
+    repo: https://github.com/danielcristho/ray-jupyterlab-k3s.git
+    dest: /home/ubuntu/ray-jupyterlab-k3s
+    clone: true
+
+- name: Install Calico network plugin
+  ansible.builtin.shell: kubectl apply -f https://docs.projectcalico.org/manifests/calico.yaml

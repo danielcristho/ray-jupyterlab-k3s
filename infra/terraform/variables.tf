@@ -21,7 +21,7 @@ variable "master_ips" {
 
 variable "master_memory" {
   type    = string
-  default = "3072"
+  default = "4096"
 }
 
 variable "master_vcpu" {
@@ -42,7 +42,7 @@ variable "master_hostname" {
 #application server
 variable "app_ips" {
   type    = list(any)
-  default = ["192.168.122.11", "192.168.122.12"]
+  default = ["192.168.122.11"]
 }
 
 variable "app_memory" {
@@ -52,7 +52,7 @@ variable "app_memory" {
 
 variable "app_vcpu" {
   type    = number
-  default = 1
+  default = 2
 }
 
 variable "app_disk" {
@@ -62,5 +62,5 @@ variable "app_disk" {
 
 variable "app_hostname" {
   type    = list(string)
-  default = ["k3s-worker1", "k3s-worker2"]
+  default = ["k3s-worker1"]
 }

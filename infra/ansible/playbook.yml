@@ -5,11 +5,12 @@
   remote_user: ubuntu
   roles:
     - master
+    # - manage-cluster
 
 - name: Setup Worker
   hosts:
     - k3s-worker1
-    - k3s-worker2
+    # - k3s-worker2
   become: true
   remote_user: ubuntu
   roles:

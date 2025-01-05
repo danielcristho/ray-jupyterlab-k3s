@@ -5,6 +5,12 @@
     state: latest
     update_cache: true
 
+- name: Install helm
+  ansible.builtin.shell: |
+    curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
+    chmod 700 get_helm.sh
+    ./get_helm.sh
+
 - name: Install kubectl
   ansible.builtin.shell: |
     curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
@@ -39,5 +45,3 @@
     src: /home/ubuntu/.kube/config
     dest: ./kubeconfig
     flat: yes
-# - name: Install Calico
-#   ansible.builtin.command: kubectl apply -f https://docs.projectcalico.org/manifests/calico.yaml
