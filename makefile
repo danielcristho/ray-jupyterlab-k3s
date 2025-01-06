@@ -32,11 +32,11 @@ shell:
 
 ## port forward the service
 forward:
-	kubectl port-forward svc/$(service) 10001:10001 8265:8265 6379:6379
+	kubectl port-forward svc/$(service) 10001:10001 8265:8265 6379:6379 --address=0.0.0.0
 
 ## status
 status: $(venv)
-	$(venv)/bin/ray status --address localhost:6379 -v
+	$(venv)/bin/ray status --address 192.168.122.10:6379 -v
 
 ## print ray commit
 version: $(venv)
@@ -72,14 +72,14 @@ tlogs:
 
 ## forward traefik dashboard
 tdashboard:
-	@echo Forwarding traefik dashboard to http://localhost:9000/dashboard/
+	@echo Forwarding traefik dashboard to http://192.168.122.10:9000/dashboard/
 	tpod=$$(kubectl get pod -n kube-system -l app.kubernetes.io/name=traefik -o custom-columns=:metadata.name --no-headers=true) && \
 		kubectl -n kube-system port-forward $$tpod 9000:9000
 
 ## run tf_mnist on cluster
 tf_mnist: $(venv)
-	$(venv)/bin/python -m raydemo.tf_mnist --address ray://localhost:10001
+	$(venv)/bin/python -m raydemo.tf_mnist --address ray://192.168.122.10:10001
 
 ## list jobs
 job-list: $(venv)
-	$(venv)/bin/ray job list --address http://localhost:8265
+	$(venv)/bin/ray job list --address http://192.168.122.10:8265

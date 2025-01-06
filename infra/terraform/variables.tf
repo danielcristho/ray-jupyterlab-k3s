@@ -26,12 +26,12 @@ variable "master_memory" {
 
 variable "master_vcpu" {
   type    = number
-  default = 2
+  default = 4
 }
 
 variable "master_disk" {
   type    = number
-  default = "10737418240"
+  default = "21474836480"
 }
 
 variable "master_hostname" {
@@ -47,17 +47,17 @@ variable "app_ips" {
 
 variable "app_memory" {
   type    = string
-  default = "2048"
+  default = "4096"
 }
 
 variable "app_vcpu" {
   type    = number
-  default = 2
+  default = 4
 }
 
 variable "app_disk" {
   type    = number
-  default = "10737418240"
+  default = "21474836480"
 }
 
 variable "app_hostname" {
