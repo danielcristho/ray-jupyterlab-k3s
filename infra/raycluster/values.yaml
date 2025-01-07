@@ -1,7 +1,7 @@
 # see https://github.com/ray-project/kuberay/tree/master/helm-chart/ray-cluster
 # and https://docs.ray.io/en/latest/cluster/kubernetes/user-guides/config.html
 image:
-  repository: localhost:5001/ray
+  repository: localhost:5100/ray
   tag: latest
   pullPolicy: IfNotPresent
 
