@@ -2,9 +2,25 @@
 
 kuberay_version = 0.6.0
 
+## Build and push images to private registry
+publish:
+	docker build -t localhost:5100/ray:latest -f infra/docker/ray.Dockerfile .
+	docker build -t localhost:5100/jupyterhub:latest -f infra/docker/jupyterhub.Dockerfile .
+	docker push ray:latest
+	docker push jupyterhub:latest
+
+publish-ray:
+	docker build -t localhost:5100/ray:latest -f infra/docker/ray.Dockerfile .
+	docker push ray:latest
+
+publish-jupyterhub:
+	docker build -t localhost:5100/jupyterhub:latest -f infra/docker/jupyterhub.Dockerfile .
+	docker push jupyterhub:latest
+
 ## install kuberay operator using quickstart manifests
 kuberay:
 # add helm repo and update to latest
+	kubectl label node k3s-worker1 node-role.kubernetes.io/worker=worker
 	helm repo add kuberay https://ray-project.github.io/kuberay-helm/
 	helm repo update kuberay
 	helm upgrade --install kuberay-operator kuberay/kuberay-operator --version $(kuberay_version) --wait --debug > /dev/null
@@ -31,7 +47,7 @@ shell:
 	kubectl exec -i -t service/$(service) -- /bin/bash
 
 ## port forward the service
-forward:
+ray-forward:
 	kubectl port-forward svc/$(service) 10001:10001 8265:8265 6379:6379 --address=0.0.0.0
 
 ## status
@@ -83,3 +99,11 @@ tf_mnist: $(venv)
 ## list jobs
 job-list: $(venv)
 	$(venv)/bin/ray job list --address http://192.168.122.10:8265
+
+## JupyterHub initilize
+
+## Forward JupyterHub services
+kubectl port-forward service/hub 8081:8081 -n jupyterlab --address=0.0.0.0
+kubectl port-forward service/proxy-api 8001:8001 -n jupyterlab --address=0.0.0.0
+kubectl port-forward service/proxy-public 8080:80 -n jupyterlab --address=0.0.0.0
+

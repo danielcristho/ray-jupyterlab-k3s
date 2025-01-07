@@ -1,0 +1,57 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: jupyterhub
+spec:
+  type: NodePort
+  ports:
+    - port: 80
+      targetPort: 8000
+  selector:
+    app: jupyterhub
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jupyterhub
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: jupyterhub
+  template:
+    metadata:
+      labels:
+        app: jupyterhub
+    spec:
+      containers:
+        - name: jupyterhub
+          image: YOUR_IMAGE_NAME
+          imagePullPolicy: Always
+          env:
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: jupyterhub-db-secrets
+                  key: username
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: jupyterhub-db-secrets
+                  key: password
+            - name: POSTGRES_HOST
+              value: jupyterhub-db
+          command: ["jupyterhub"]
+          args: ["--config", "/etc/jupyterhub/jupyterhub_config.py"]
+          volumeMounts:
+            - name: jupyterhub-cfg
+              mountPath: /etc/jupyterhub/
+            - name: jupyterhub-data
+              mountPath: /data
+      volumes:
+        - name: jupyterhub-cfg
+          configMap:
+            name: jupyterhub-config
+        - name: jupyterhub-data
+          persistentVolumeClaim:
+            claimName: jupyterhub-pvc
