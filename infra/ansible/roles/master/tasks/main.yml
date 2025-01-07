@@ -1,10 +1,4 @@
 ---
-- name: Run update
-  ansible.builtin.apt:
-    name: aptitude
-    state: latest
-    update_cache: true
-
 - name: Install helm
   ansible.builtin.shell: |
     curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
