@@ -1,1 +1,1 @@
-ray[default, data, tune]==2.4.0
+ray[default, data, tune]==2.40.0
