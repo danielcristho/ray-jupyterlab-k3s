@@ -39,7 +39,7 @@
     cmd: ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
     creates: /usr/bin/docker-compose
 
-- name: Add private registry
+- name: Configure private registry
   ansible.builtin.template:
     src: daemon.j2
     dest: /etc/docker/daemon.json

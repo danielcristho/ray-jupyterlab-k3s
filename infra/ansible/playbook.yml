@@ -6,8 +6,8 @@
   roles:
     - config
     - docker
-  # - master
-  # - manage-cluster
+    - master
+    - manage-cluster
 
 - name: Setup Worker
   hosts:
@@ -17,4 +17,4 @@
   remote_user: ubuntu
   roles:
     - config
-  # - worker
+    - worker
