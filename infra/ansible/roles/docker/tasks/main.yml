@@ -19,7 +19,7 @@
     update_cache: true
 
 - name: Add non-root to docker group
-  user:
+  ansible.builtin.user:
     name: ubuntu
     groups: [docker]
     append: true

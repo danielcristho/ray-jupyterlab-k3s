@@ -2,20 +2,24 @@
 
 kuberay_version = 0.6.0
 
+## Create private registry
+registry:
+	docker run -d -p 5100:5000 --restart=always --name registry registry:2
+
 ## Build and push images to private registry
 publish:
 	docker build -t localhost:5100/ray:latest -f infra/docker/ray.Dockerfile .
 	docker build -t localhost:5100/jupyterhub:latest -f infra/docker/jupyterhub.Dockerfile .
-	docker push ray:latest
-	docker push jupyterhub:latest
+	docker push localhost:5100/ray:latest
+	docker push localhost:5100/jupyterhub:latest
 
 publish-ray:
 	docker build -t localhost:5100/ray:latest -f infra/docker/ray.Dockerfile .
-	docker push ray:latest
+	docker push localhost:5100/ray:latest
 
 publish-jupyterhub:
 	docker build -t localhost:5100/jupyterhub:latest -f infra/docker/jupyterhub.Dockerfile .
-	docker push jupyterhub:latest
+	docker push localhost:5100/jupyterhub:latest
 
 ## install kuberay operator using quickstart manifests
 kuberay:
@@ -37,10 +41,6 @@ restart:
 
 cluster = kuberay
 service = raycluster-$(cluster)-head-svc
-
-## install k3d ingress
-k3d-ingress:
-	helm upgrade --install example-cluster-ingress infra/ingress --set cluster=raycluster-$(cluster) --wait
 
 ## get shell on head pod
 shell:
@@ -103,7 +103,7 @@ job-list: $(venv)
 ## JupyterHub initilize
 
 ## Forward JupyterHub services
-kubectl port-forward service/hub 8081:8081 -n jupyterlab --address=0.0.0.0
-kubectl port-forward service/proxy-api 8001:8001 -n jupyterlab --address=0.0.0.0
-kubectl port-forward service/proxy-public 8080:80 -n jupyterlab --address=0.0.0.0
+# kubectl port-forward service/hub 8081:8081 -n jupyterlab --address=0.0.0.0
+# kubectl port-forward service/proxy-api 8001:8001 -n jupyterlab --address=0.0.0.0
+# kubectl port-forward service/proxy-public 8080:80 -n jupyterlab --address=0.0.0.0
 
