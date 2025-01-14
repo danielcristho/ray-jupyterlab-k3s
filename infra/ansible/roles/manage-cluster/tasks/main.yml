@@ -1,4 +1,8 @@
 ---
+- name: Install kubernetes library for Python
+  ansible.builtin.pip:
+    name: kubernetes
+
 - name: Clone ray project
   changed_when: false
   ansible.builtin.git:
@@ -6,5 +10,8 @@
     dest: /home/ubuntu/ray-jupyterlab-k3s
     clone: true
 
-- name: Install Calico network plugin
-  ansible.builtin.shell: kubectl apply -f https://docs.projectcalico.org/manifests/calico.yaml
+- name: Install network plugin
+  kubernetes.core.k8s:
+    kubeconfig: /home/ubuntu/.kube/config
+    src: /home/ubuntu/ray-jupyterlab-k3s/infra/raycluster/manifests/calico.yaml
+    state: present
