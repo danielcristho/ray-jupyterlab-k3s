@@ -31,7 +31,7 @@ kuberay:
 
 ## create ray cluster
 raycluster:
-	helm upgrade --install raycluster kuberay/ray-cluster --version $(kuberay_version) --values infra/raycluster/values.yaml --wait --debug > /dev/null
+	helm upgrade --install raycluster kuberay/ray-cluster --version $(kuberay_version) --values infra/ray-cluster/values.yaml --wait --debug > /dev/null
 # restart needed because of https://github.com/ray-project/kuberay/issues/234
 	make restart
 
@@ -101,9 +101,21 @@ job-list: $(venv)
 	$(venv)/bin/ray job list --address http://192.168.122.10:8265
 
 ## JupyterHub initilize
+jupyterhub:
+	helm repo add jupyterhub https://hub.jupyter.org/helm-chart/
+	helm repo update
 
-## Forward JupyterHub services
-# kubectl port-forward service/hub 8081:8081 -n jupyterlab --address=0.0.0.0
-# kubectl port-forward service/proxy-api 8001:8001 -n jupyterlab --address=0.0.0.0
-# kubectl port-forward service/proxy-public 8080:80 -n jupyterlab --address=0.0.0.0
+## create jupyterhub cluster
+jupyter-cluster:
+	kubectl apply -f /home/ubuntu/ray-jupyterlab-k3s/infra/jupyterlab-cluster/jupyterhub_pvc.yaml
+	helm upgrade --cleanup-on-fail \
+		--install jhub jupyterhub/jupyterhub \
+		--namespace jhub \
+		--create-namespace \
+		--version=4.0.0 \
+		--values jupyterhub_config.yaml
+
+## expose jupyterhub
+jupyter-forward:
+	kubectl --namespace=jhub port-forward service/proxy-public 8080:http --address=0.0.0.0
 
