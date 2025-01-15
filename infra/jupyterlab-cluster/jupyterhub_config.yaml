@@ -4,13 +4,24 @@ auth:
 hub:
   cookie_secret: "30a649f51ae4c9e9146ac678fd092b68d3f37e8454f59289df6feaa539c8002a"
   db:
-    url: postgresql://your-username:your-password@jupyterhub-db/jupyterhub
+    url: sqlite:////data/jupyterhub.sqlite
   service:
     type: ClusterIP
   url: http://jupyterhub:8000
+  extraVolumes:
+    - name: jupyterhub-db
+      persistentVolumeClaim:
+        claimName: jupyterhub-pvc
+  extraVolumeMounts:
+    - name: jupyterhub-db
+      mountPath: /data
 
 proxy:
   secretToken: "c413fe27d65c5916b7cf4028bf49a19b3056d59f2c2d1e79349244a6f758babe"
+  https:
+    enabled: false
+  service:
+    type: ClusterIP
 
 singleuser:
   image:
