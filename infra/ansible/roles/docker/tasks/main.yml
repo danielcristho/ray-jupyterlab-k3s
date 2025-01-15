@@ -19,10 +19,10 @@
     update_cache: true
 
 - name: Add non-root to docker group
-  ansible.builtin.user:
-    name: ubuntu
-    groups: [docker]
-    append: true
+  ansible.builtin.shell: |
+    sudo groupadd docker
+    sudo usermod -aG docker $USER
+    newgrp docker
 
 - name: Install Docker module for Python
   ansible.builtin.pip:

@@ -1,0 +1,20 @@
+auth:
+  type: dummy
+
+hub:
+  cookie_secret: "YOUR_SECRET_KEY"
+  db:
+    url: postgresql://your-username:your-password@jupyterhub-db/jupyterhub
+  service:
+    type: ClusterIP
+  url: http://jupyterhub:8000
+
+proxy:
+  secretToken: "c413fe27d65c5916b7cf4028bf49a19b3056d59f2c2d1e79349244a6f758babe"
+
+singleuser:
+  image:
+    name: "YOUR_JUPYTER_NOTEBOOK_IMAGE"
+    tag: "latest"
+  storage:
+    type: none

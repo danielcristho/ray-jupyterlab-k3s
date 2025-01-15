@@ -21,12 +21,12 @@ variable "master_ips" {
 
 variable "master_memory" {
   type    = string
-  default = "4096"
+  default = "3048"
 }
 
 variable "master_vcpu" {
   type    = number
-  default = 4
+  default = 2
 }
 
 variable "master_disk" {
