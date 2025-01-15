@@ -14,7 +14,7 @@ proxy:
 
 singleuser:
   image:
-    name: "YOUR_JUPYTER_NOTEBOOK_IMAGE"
+    name: "localhost:5100/jupyterhub"
     tag: "latest"
   storage:
     type: none
