@@ -1,13 +1,13 @@
-auth:
-  type: dummy
-
 hub:
-  cookie_secret: "30a649f51ae4c9e9146ac678fd092b68d3f37e8454f59289df6feaa539c8002a"
+  config:
+    JupyterHub:
+      authenticator_class: dummy
+    KubeSpawner:
+      k8s_api_request_timeout: 12345
   db:
     url: sqlite:////data/jupyterhub.sqlite
   service:
     type: ClusterIP
-  url: http://jupyterhub:8000
   extraVolumes:
     - name: jupyterhub-db
       persistentVolumeClaim:
@@ -15,6 +15,10 @@ hub:
   extraVolumeMounts:
     - name: jupyterhub-db
       mountPath: /data
+  config:
+    Authenticator:
+      admin_users:
+        - admin
 
 proxy:
   secretToken: "c413fe27d65c5916b7cf4028bf49a19b3056d59f2c2d1e79349244a6f758babe"
@@ -25,14 +29,10 @@ proxy:
 
 singleuser:
   image:
-    name: "jupyter/datascience-notebook"
+    name: "jupyter/minimal-notebook"
     tag: "latest"
   storage:
     type: none
-
-admin:
-    users:
-      - admin
 
 cull:
   enabled: true
