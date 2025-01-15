@@ -1,6 +1,6 @@
 helm upgrade --cleanup-on-fail \
-  --install jupyterlab-deployment jupyterhub/jupyterhub \
-  --namespace jupyterlab \
+  --install jhub jupyterhub/jupyterhub \
+  --namespace jhub \
   --create-namespace \
-  --version=0.11.1 \
-  --values values.yaml
+  --version=1.1 \
+  --values config.yaml

@@ -2,7 +2,7 @@ auth:
   type: dummy
 
 hub:
-  cookie_secret: "YOUR_SECRET_KEY"
+  cookie_secret: "30a649f51ae4c9e9146ac678fd092b68d3f37e8454f59289df6feaa539c8002a"
   db:
     url: postgresql://your-username:your-password@jupyterhub-db/jupyterhub
   service:
@@ -14,7 +14,16 @@ proxy:
 
 singleuser:
   image:
-    name: "localhost:5100/jupyterhub"
+    name: "jupyter/datascience-notebook"
     tag: "latest"
   storage:
     type: none
+
+admin:
+    users:
+      - admin
+
+cull:
+  enabled: true
+  timeout: 600
+  every: 60

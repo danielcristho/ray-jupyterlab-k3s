@@ -1,8 +1,8 @@
 # see https://github.com/ray-project/kuberay/tree/master/helm-chart/ray-cluster
 # and https://docs.ray.io/en/latest/cluster/kubernetes/user-guides/config.html
 image:
-  repository: localhost:5100/ray
-  tag: latest
+  repository: danielcristh0/ray
+  tag: 1.1
   pullPolicy: IfNotPresent
 
 head:

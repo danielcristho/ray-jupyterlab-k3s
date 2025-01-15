@@ -26,7 +26,7 @@ spec:
     spec:
       containers:
         - name: jupyterhub
-          image: localhost:5100/jupyterhub:latest
+          image: danielcristh0/jupyterhub:1.1
           imagePullPolicy: Always
           env:
             - name: POSTGRES_USER
